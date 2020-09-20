@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>完整的图片轮播</title>
+
+<style>
+	*{
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+	
+	#banner_wrap{
+		width: 1280px;
+		height: 500px;
+		/* border: 2px solid red; */
+		margin: 0 auto;
+		overflow: hidden; 
+		position: relative;
+	}
+	
+	#banner{
+		height: 500px;
+		/* border: 2px solid blue; */
+		position: absolute;
+	}
+	
+	.oLi,img{
+		width: 1280px;
+		height: 500px;
+		float: left;
+	}
+	
+	.focus{
+		width: 110px;
+		hieght: 20px;
+		position: absolute;
+		left: 45%;
+		bottom: 10px;
+		border-radius: 5px;
+	}
+	
+	.focus_li{
+		width: 13px;
+		height: 13px;
+		border-radius: 50%;
+		background: #fff;
+		float: left;
+		margin: 4px 5px;
+		cursor: pointer;
+	}
+	
+	.btn{
+		width: 40px;
+		height: 80px;
+		/* border: 2px solid blue; */
+		position: absolute;
+		top: 40%;
+		cursor: pointer;
+	}
+	
+	.left{
+		left: 5px;
+		background:  #ccc url("../myOrder/arrow-left.png") no-repeat 50%;
+	}
+	
+	.right{
+		right: 5px;
+		background: #ccc url("../myOrder/arrow-right.png") no-repeat 50%;
+	}
+</style>
+
+</head>
+<script type="text/javascript" src="../jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var index=0;
+		var id;
+		$(".focus_li:eq(0)").css("background","#2993CC");
+		$("#banner").width($(".oLi:eq(0)").width()*$(".oLi").length);
+		function BannerLeft(){
+			index++;
+			if(index==$(".oLi").length){
+				index=0;
+			}
+			$(".focus_li").css("background","#fff").eq(index).css("background","#2993CC");
+			/* $(".focus_li:eq("+index+")").css("background","#2993CC"); */
+			$("#banner").animate({"left":-$(".oLi:eq(0)").width()*index},1500);
+		};
+		
+		
+		id=setInterval(BannerLeft, 2000);
+		
+		$("#banner_wrap").mouseover(function(){
+			clearInterval(id);
+		});
+		
+		$("#banner_wrap").mouseout(function(){
+			id=setInterval(BannerLeft, 2000);
+		});
+		
+		//鼠标悬停下面的点轮播到所属的图片
+		$(".focus_li").mouseover(function(){
+			var index=$(this).index();
+			console.log(index);
+			//将ul中的动作停止下来
+			$("#banner").stop();
+			$("#banner").animate({"left":-$(".oLi:eq(0)").width()*index},1500);
+			$(this).css("background","#2993CC").siblings().css("background","#fff");
+		});
+		
+		
+		//左侧按钮
+		$(".left").click(function(){
+			$("#banner").stop();
+			bannerRight();
+		});
+		
+		function bannerRight(){
+			if(index==0){
+				index=$(".oLi").length-1;
+			}else{
+				index--;
+			}
+			
+			$("#banner").animate({"left":-$(".oLi:eq(0)").width()*index},1500);
+			$(".focus_li").eq(index).css("background","#2993CC").siblings().css("background","#fff");
+		};
+		
+		
+		//右侧按钮
+		$(".right").click(function(){
+			$("#banner").stop();
+			BannerLeft();
+		});
+	});
+</script>
+<body>
+	<div id="banner_wrap">
+		<ul id="banner">
+			<li class="oLi">
+				<a href="#"><img src="../myOrder/itemCat_banner1.png"/></a>
+			</li>
+			
+			<li class="oLi">
+				<a href="#"><img src="../myOrder/itemCat_banner2.png"/></a>
+			</li>
+			
+			<li class="oLi">
+				<a href="#"><img src="../myOrder/itemCat_banner3.png"/></a>
+			</li>
+			
+			<li class="oLi">
+				<a href="#"><img src="../myOrder/itemCat_banner4.png"/></a>
+			</li>
+		</ul>
+		
+		<!-- 焦点 -->
+		<ul class="focus">
+			<li class="focus_li"></li>
+			<li class="focus_li"></li>
+			<li class="focus_li"></li>
+			<li class="focus_li"></li>
+		</ul>
+		
+		<!-- 添加按钮 -->
+		<div class="btn left"></div>
+		<div class="btn right"></div>
+	</div>
+</body>
+</html>
