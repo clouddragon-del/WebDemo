@@ -4,7 +4,16 @@ $(function(){
 	//光标离开  账号文本框  事件
 	$("#form-register").on("blur","#uname",checkUserName);
 	//绑定光标离开  密码文本框 事件
-	$("#form-register").on("blue","#upwd",checkUserPwd);
+	$("#form-register").on("blur","#upwd",checkUserPwd);
+	//绑定光标离开 重输入密码框事件
+	$("#form-register").on("blur","#upwdconfirm",checkUserPwdConfirm);
+	//绑定光标离开  邮箱文本框事件
+	$("#form-register").on("blur","#email",checkUserEmail);
+	//绑定光标离开  手机号文本框事件
+	$("#form-register").on("blur","#phone",checkUserPhone);
+	//判断是否整体输入正确
+	$("#bt-register").click(checkAll);
+
 });
 
 function checkUserName(){
@@ -28,5 +37,53 @@ function checkUserPwd(){
 	}else{
 		$(".upwd").show().html("密码长度在6-12位之间").css("color","red");
 		return false;
+	}
+}
+
+function checkUserPwdConfirm(){
+	var oldPwd=$("#upwd").val();
+	var newPwd=$("#upwdconfirm").val();
+	if(oldPwd==newPwd){
+		$(".upwdconfirm").show().html("OK").css("color","green");
+		return true;
+	}else{
+		$(".upwdconfirm").show().html("密码与上次输入不一致").css("color","red");
+		return false;
+	}
+}
+
+
+function checkUserEmail(){
+	var userEmail=$("#email").val();
+	var reg=/^\w{5,18}@\w{2,6}\.[a-z]{2,4}$/;
+	if(reg.test(userEmail)){
+		$(".email").show().html("OK").css("color","green");
+		return true;
+	}else{
+		$(".email").show().html("请正确输入邮箱").css("color","red");
+		return false;
+	}
+}
+
+function checkUserPhone(){
+	var phone=$("#phone").val();
+	var reg=/^1\d{10}$/;
+	if(reg.test(phone)){
+		$(".phone").show().html("OK").css("color","green");
+		return true;
+	}else{
+		$(".phone").show().html("输入有误").css("color","red");
+		return false;
+	}
+}
+
+function checkAll(){
+	var n=checkUserPhone()+checkUserEmail()
+		 +checkUserPwdConfirm()+checkUserPwd()
+		 +checkUserName();
+	if(n==5){
+		alert("注册成功");
+	}else{
+		alert("请重新检查输入");
 	}
 }
