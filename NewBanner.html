@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>图片轮播</title>
+<style>
+	*{
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+	.p p{
+		margin-left: 40%;
+		color: red;
+		font-size: 30px;
+		font-weight: 900;
+	}
+	
+	.banner{
+		width: 1000px;
+		height: 400px;
+		border: 2px solid red;
+		margin: auto;
+		overflow: hidden;
+		position: relative;
+	}
+	
+	.Imgul li img{
+		float: left;
+	}
+	
+	.Imgul{
+		height: 400px;
+		position: absolute;
+	}
+	
+	.focus{
+		position: relative;
+		cursor: pointer;
+	}
+	
+	.focus img{
+		position: absolute;
+		margin: 50% 45%;
+	}
+	
+	.left{
+		width: 40px;
+		height: 80px;
+		background:no-repeat;
+		position: absolute;
+		margin-left: 5px;
+		margin-top: 16%;
+	}
+	
+	.right{
+		width: 40px;
+		height: 80px;
+		background:no-repeat;
+		position: absolute;
+		margin-left: 950px;
+		margin-top: 16%;
+	}
+	
+	/* 图片下面的点 */
+	.point{
+		width: 100px;
+		height: 25px;
+		position: absolute;
+		left: 45%;
+		bottom: 22px;
+	}
+	
+	.point li{
+		width: 20px;
+		height: 20px;
+		margin-left: 5px;
+		margin-top: 5px;
+	    background-color: #C8C8C8; 
+		float: left;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+</style>
+</head>
+
+<script type="text/javascript" src="../jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+/*页面加载完成后运行*/
+	$(function(){
+		var index=0;
+		var id=null;
+		/*将图片的div宽度为图片的个数乘以图片的宽度*/
+		$(".Imgul").width($(".Imgul li").length*$("img").width());
+		//将图片轮播起来
+		id=setInterval(leftMove, 2000);
+		//鼠标进入div停止图片轮播
+		$(".banner").mouseover(function(){
+			clearInterval(id);
+		});
+		//鼠标离开div开始图片轮播
+		$(".banner").mouseout(function(){
+			id=setInterval(leftMove, 2000);
+		});
+		//点击左边的图片进行左移动
+		$(".left").click(rightMove);
+		//点击右边图片进行右移动
+		$(".right").click(leftMove);
+		//鼠标点击下面的点
+		$(".point li").mouseover(function(){
+			$(this).css("background","white").siblings().css("background","#C8C8C8");
+			index=$(this).index();
+			$(".Imgul").animate({"left":-$(".Imgul img").width()*index},1500);
+		});
+		
+		
+		
+		//设置图片左移的函数
+		function leftMove(){
+			index++;
+			if(index>=$(".Imgul img").length){
+				index=0;
+			}
+			$(".Imgul").animate({"left":-$(".Imgul img").width()*index},1500);
+			$(".point li").eq(index).css("background","white").siblings().css("background","#C8C8C8");
+		}
+		
+		//设置图片右移的函数
+		function rightMove(){
+			index--;
+			if(index<=0){
+				index=$(".Imgul li").length-1;
+			}
+			$(".Imgul").animate({"left":-$(".Imgul img").width()*index},1500);
+			$(".point li").eq(index).css("background","white").siblings().css("background","#C8C8C8");
+		}
+		
+	});
+</script>
+
+<body>
+	<div class="p"><p>这是一个图片轮播的示例</p></div>
+	<!-- 下面标签内是要轮播的图片 -->
+	<div class="banner">
+		<ul class="Imgul">
+			<li>
+				<img src="../myOrder/itemCat_banner1.png"/>
+			</li>
+			
+			<li>
+				<img src="../myOrder/itemCat_banner2.png"/>
+			</li>
+			
+			<li>
+				<img src="../myOrder/itemCat_banner3.png"/>
+			</li>
+			
+			<li>
+				<img src="../myOrder/itemCat_banner4.png"/>
+			</li>
+		</ul>
+		
+		<ul id="focus">
+			<li class="focus left">
+				<img src="../myOrder/arrow-left.png"/>
+			</li>
+			
+			<li class="focus right">
+				<img src="../myOrder/arrow-right.png"/>
+			</li>
+		</ul>
+		
+		<ul class="point">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	
+	
+</body>
+</html>
